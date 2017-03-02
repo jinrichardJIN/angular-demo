@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html ng-app='myApp'>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.div{
+				width:200px;
+				height:100px;
+				position:relative;
+			}
+			.div>.directSpan{
+				position:absolute;
+				bottom:0;
+				right:0;
+				display:inline-block;
+			}
+			.div2{
+				width:500px;
+			}
+		</style>
+	</head>
+	<body ng-controller="myCtrl" ng-init="num=100">
+		<!--<div class="div">
+			<textarea style="width:100%; height:100%;" name="" rows="" cols=""></textarea>
+			<span class="directSpan">可输入字数10</span>
+		</div>-->
+		{{v}}
+		<text-surplus text-class='div2'  max-length="num" text-model="v"></text-surplus>
+	</body>
+	<script src="../src/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../src/angular.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var app = angular.module('myApp',[]);
+		app.directive('textSurplus',['$timeout',function($timeout){
+			return {
+				restrict:'E',
+				scope:{
+					maxLength:'=',
+					textClass:'=',
+					textModel:'='
+				},
+				template:'<div style="position:relative" ng-class="div">'+
+							'<textarea  ng-focus="startWatch()" ng-blur="stopWatch()" ng-keyup="textKeyUp(textV)"  ng-model="textV" style="width:100%; height:100%; resize:none;" name="" rows="" cols=""></textarea>'+
+							'<span class="directSpan" style="position:absolute;right:0;bottom:0;">可输入字数{{UseFullNum}}</span>'+
+						'</div>',
+				link:function(scope,element,attrs){
+					console.log(attrs);
+					if(attrs.hasOwnProperty('textClass')&&(typeof attrs['textClass'])!=undefined){
+						scope.div = attrs['textClass'];
+					}else{
+						scope.div = 'div';
+					}
+					
+					//文本域输入
+					scope.textKeyUp = function(value){
+						scope.UseFullNum = scope.maxLength-value.length;
+						scope.textModel =  scope.textV; 
+						return scope.textModel
+					}
+					//控制文本域最大长度
+					if(scope.maxLength){
+						element.find('textarea').attr('maxlength',scope.maxLength);
+					}
+					
+					
+					// start watch
+					scope.startWatch = function(){
+						var watch = scope.$watch('textV',function(n,o){
+						var n = n||0;
+						if(typeof n==undefined || n==''){
+							return false;
+						}else{
+							var	numL = n.length||0;
+						}
+						
+							scope.UseFullNum = scope.maxLength-numL;
+							console.log('kaishi')
+						})
+						return watch;
+					}
+					// stop watch
+					scope.stopWatch = function(){
+						scope.startWatch()();
+					}
+				}
+				
+			}	
+		}])
+		.controller('myCtrl',function(){
+
+		})
+		
+		
+		
+		
+		
+		
+		
+		
+	</script>
+</html>

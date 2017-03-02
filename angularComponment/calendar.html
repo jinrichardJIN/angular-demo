@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html ng-app='MyDate'>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			html,body{
+				margin:0 0;
+				padding:0 0;
+			}
+			ul{
+				width:350px;
+				height:300px;
+				margin:0 0;
+				padding:0 0;
+			}
+			li{
+				width:50px;
+				height:50px;
+				box-sizing:border-box;
+				border:1px solid saddlebrown;
+				list-style:none;
+				float:left;
+				color:white;
+				background:seagreen;
+				padding:2px 2px;
+				line-height:50px;
+				text-align:center;
+				font-size:18px;
+			}
+			.date-header{
+				width:350px;
+			}
+			span{
+				background:black;
+				opacity:0.8;
+				width:50px;
+				height:40px;
+				border:1px solid saddlebrown;
+				display:inline-block;
+				box-sizing:border-box;
+				float:left;
+				text-align:center;
+				color:white;
+				line-height:40px;
+			}
+			
+		</style>
+	</head>
+	<body  ng-controller="DateCtrl">
+		<div class="date-header">
+			<span>一</span>
+			<span>二</span>
+			<span>三</span>
+			<span>四</span>
+			<span>五</span>
+			<span>六</span>
+			<span>七</span>
+		</div>
+		<ul>
+			<li ng-repeat='item in DateObj'>{{item.date}}</li>
+		</ul>
+		<input type="button" value="下月" ng-click='ChangeMonth("+")'>
+		<input type="button" value="上月" ng-click='ChangeMonth("-")'>
+		<br/>
+		<span>当月{{currentM}}</span>
+		<span style="margin-left:50px;width:200PX;">当年{{currentY}}</span>
+		
+		<div ng-controller="parent">
+			{{parentScope}}
+			<div ng-controller="child">
+				{{parentScope}}
+			</div>
+		</div>
+		
+		
+	</body>
+	<script src="src/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<!--<script src="src/angular.min.js" type="text/javascript" charset="utf-8"></script>-->
+	<script src="src/angular.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		
+		
+		var app = angular.module('MyDate',[]);
+		app.controller('DateCtrl',['$scope',function($scope){
+			//config  日历初始化
+			$scope.DateObj = [];			
+			$scope.configDateArr = function(){
+				for(var index = 0;index<42;index++){
+					var tmpObj = {};
+					$scope.DateObj.push(tmpObj)
+				}
+			}
+			$scope.configDateArr();
+			
+			
+			
+			//one 判断当月所属的 年-月-日-星期
+			$scope.currentY = new Date().getFullYear();
+			$scope.currentM = new Date().getMonth()+1;
+			$scope.currentD = new Date().getDate();
+			$scope.currentW = new Date().getDay();
+			
+			
+			//two 判断某年某月的第一天是周几
+			$scope.configWeek = function(year,month){
+				var tmp = year+'/'+month+'/'+'01';
+				return  new Date(tmp).getDay();
+			};
+			
+			//three 判断这一个月是多少天
+			$scope.configDayNum = function(year,month){
+				if(((year%400==0) || (year%100!=0) ) && (year%4==0)){
+			        /*闰年*/
+			        if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+			       		return 31;
+			        }else if(month==2){
+			       		return 29;
+			        }else{
+			       		return 30;
+			        }
+			    }else{
+			    	/*平年*/
+			    	if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+			       		return 31;
+			        }else if(month==2){
+			       		return 28;
+			        }else{
+			       		return 30;
+			        }
+			    }
+			};
+			// four 用来绘制日历
+			$scope.initial = function(whenDay,DayNum){
+				//four--(1)  年&&月
+				var whenDay = $scope.configWeek($scope.currentY,$scope.currentM)==0?7:$scope.configWeek($scope.currentY,$scope.currentM);
+				var DayNum =  $scope.configDayNum($scope.currentY,$scope.currentM);
+				
+				//four--(2)置空
+				$scope.DateObj.map(function(v,i,arr){
+					$scope.DateObj[i]['date'] = '';
+					
+				});
+				//four--(1)绑定日期
+				for(var j = 0;j<DayNum;j++){
+					
+					$scope.DateObj[whenDay-1+j]['date'] = j+1;
+				}
+			}
+			$scope.initial();
+			
+			
+			//five 切换月份
+			$scope.ChangeMonth = function(type){
+				if(type=="+"){
+					$scope.currentM++;
+					if($scope.currentM>=13){
+						$scope.currentM = 1;
+						$scope.currentY++;
+					}
+					$scope.initial();
+				}else if(type=="-"){
+					$scope.currentM--;
+					if($scope.currentM<=0){
+						$scope.currentM = 12;
+						$scope.currentY--;
+					}
+					$scope.initial();
+				}
+			}
+		}])
+		
+		app.controller('parent',['$scope',function($scope){
+			$scope.parentScope = '我是父親'
+		}])
+		app.controller('child',['$scope',function($scope){
+			$scope.childScope = '我是兒子'
+		}])
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</script>
+</html>

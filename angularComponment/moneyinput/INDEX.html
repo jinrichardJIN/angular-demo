@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<style type="text/css">
+		.class{
+			height:20px;
+			background-color:red;
+		}
+		.class2{
+			background-color:black;
+		}
+	</style>
+	<body ng-controller="myCtrl">
+		<money-check attr-class='class2' money-model='money' is-required="true" ></money-check>
+		{{money}}
+	</body>
+	<script src="../src/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../src/angular.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var app = angular.module('myApp',[]);
+		app.directive('moneyCheck',function(){
+			return {
+				restrict:'E',
+				template:'<input type="text"  ng-required="isRequired" ng-class="classA" ng-keydown="Down(inputV)" ng-keyup="Up(inputV)" ng-model="inputV ">',
+				scope:{
+					attrClass:'=',
+					moneyModel:'=',
+					isRequired:'='
+					
+				},
+				link:function(scope,element,attrs){
+					console.log(scope.attrClass)
+					scope.classA = scope.attrClass?scope.attrClass:'class';
+					//键盘抬起事件
+					scope.Up = function(value){
+						//格式验证
+						var reg = /^([1-9]\d{0,10}|0)([.]?|(\.\d{1,2})?)$/g;
+						var tmpBl =  reg.test(value);
+						if(!tmpBl){
+							scope.inputV = value.substring(0,value.length-1);
+						}
+						//长度限制
+							
+						if(value.indexOf('.')!=-1){       //one  have '.'
+							element.attr('maxlength',13);
+							if(value.length>=13){
+								scope.inputV = value.substring(0,13);
+							}
+					    }else{							  //one  haven't' '.'
+					    	if(value.length>=10){
+								scope.inputV = value.substring(0,10);
+							}
+							element.attr('maxlength',10);
+						}
+					    scope.bool = true;
+					    
+					    scope.moneyModel = scope.inputV;
+					}
+					//键盘按下事件
+					scope.press = function(value){
+						scope.bool = false;
+						if(value.indexOf('.')!=-1){       //one  have '.'
+							if(value.length>=13){
+								
+							}
+							
+					    }else{							  //one  haven't' '.'
+					    	if(value.length>=10){
+								element.attr('maxlength',10);
+							}	
+						}
+					}
+					
+					scope.$watch('bool',function(n,o){
+						if(o==n){
+						}
+					})
+				}
+				
+			}
+			
+		})
+		.controller('myCtrl',['$scope',function($scope){
+			$scope.class2 = 'class2';
+		}])
+		
+		
+		
+	</script>
+</html>
