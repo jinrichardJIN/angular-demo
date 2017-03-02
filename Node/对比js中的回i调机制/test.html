@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		//业务逻辑
+		//期望		（李金唱歌--->所有人都会死---->警察抓走李金）
+		
+		function ljSing(){
+			console.log('李金唱歌');
+			allDie();
+			console.log('警察抓走李金');
+		}
+		function allDie(){
+			console.log('所有人都要死');
+			var a = 0;
+			for(var i=0;i<100000000;i++){
+				a+=i;
+			}
+			console.log('人已经死光了'+a);
+		}
+		
+		ljSing();
+		
+		
+		
+		
+		
+		
+		
+		
+	</script>
+</html>
