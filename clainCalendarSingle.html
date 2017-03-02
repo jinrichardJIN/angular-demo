@@ -1,0 +1,12 @@
+<div ng-if="show" class="clainCalFrame" ng-click="preventBubble($event)">
+    <div class="clainCalPopArrowEx">
+        <div class="clainCalPopArrowIn"></div>
+        <div class="clainCalPopArrowOut"></div>
+    </div>
+    <div class="clainCal">
+        <clain-calendar on-select="selectDay(day)" datevalue="datevalue" on-select-month="selectMonth(month)" month-only="monthOnly"></clain-calendar>
+    </div>
+    <div class="clainCalbox">
+    	<div class="clainCalShadow"></div>
+    </div>
+</div>

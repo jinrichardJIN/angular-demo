@@ -1,0 +1,56 @@
+<div>
+    <div ng-if="showDay">
+        <div class="clainCalTitle">
+            <div class="toleft" ng-click="toleft()">
+            </div>
+            <div class="cur" ng-click="changeMonth()">{{cur.getFullYear()}}-{{cur.getMonth()+1}}</div>
+            <div class="toright" ng-click="toright()">
+            </div>
+        </div>
+        <div class="clainCalBody clainWeek">
+            <div class="clainCalCell">一</div>
+            <div class="clainCalCell">二</div>
+            <div class="clainCalCell">三</div>
+            <div class="clainCalCell">四</div>
+            <div class="clainCalCell">五</div>
+            <div class="clainCalCell">六</div>
+            <div class="clainCalCell">天</div>
+        </div>
+        <div class="clainCalBody">
+            <div ng-repeat="day in days" class="clainCalCell" ng-click="selectDay(day)" ng-class="{'activeDay':isEqual(now,day,'day')}">
+                {{day.getDate()}}
+                <!--<div style="clear: both"></div>-->
+            </div>
+        </div>
+    </div>
+    <div ng-if="showMonth">
+        <div class="clainCalTitle">
+            <div class="toleft" ng-click="toYearLeft()">
+            </div>
+            <div class="cur" ng-click="changeYear()">{{cur.getFullYear()}}</div>
+            <div class="toright" ng-click="toYearRight()">
+            </div>
+        </div>
+        <div class="wyMonth" >
+            <div ng-repeat="month in months" class="monthStyle" ng-click="selectMonth(month.code)"
+                 ng-class="{'activeDay':isEqual(now,month.code,'month')}">
+                {{month.name}}
+            </div>
+        </div>
+    </div>
+    <div ng-if="showYear">
+        <div class="clainCalTitle">
+            <div class="toleft" ng-click="toYearReduce()">
+            </div>
+            <div class="cur" ng-click="changeDay()">{{yearFirst}}-{{yearFirst+9}}</div>
+            <div class="toright" ng-click="toYearAdd()">
+            </div>
+        </div>
+        <div class="wyMonth" >
+            <div ng-repeat="year in years" class="monthStyle" ng-click="selectYear(year)"
+                 ng-class="{clainTip:day.getMonth()!=cur.getMonth(),'activeDay':isEqual(now,year,'year'),selectedDay:isEqual(now,year,'year')}">
+                {{year}}
+            </div>
+        </div>
+    </div>
+</div>

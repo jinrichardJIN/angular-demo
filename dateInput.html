@@ -1,0 +1,9 @@
+<div class="dateInputFrame">
+    <input ng-disabled="disabled" type="text" class="dateInputAction clainInput input-text" >
+    <div class="dateInputCalCon" tabindex="-1" ng-blur="onBlur()">
+        <div ng-click="toggleCal()" ng-class="{'dateInputImg':true,'dateInputImgx':show}"></div>
+        <div class="dateInputCal">
+            <clain-calendar-single show="show" on-select-month="selectMonth(month)" on-select-day="selectDay(day)" month-only="monthOnly" datevalue="datevalue" value-change="changeValue()"></clain-calendar-single>
+        </div>
+    </div>
+</div>

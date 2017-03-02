@@ -1,0 +1,30 @@
+angular.module("routerApp").directive("clainCalendarSingle",function(){
+    return{
+    restrict: 'E',
+    replace: true,
+    templateUrl:"./component/commonView/clainDateinput/clainCalendarSingle.html",
+    controller:['$scope',function($scope){
+        $scope.selectDay=function(day){
+            $scope.onSelectDay({day:day});
+            $scope.valueChange();
+        };
+        $scope.selectMonth=function(month){
+            $scope.valueChange();
+            $scope.onSelectMonth({month:month});
+        };
+        //阻止事件外传
+        $scope.preventBubble=function($event){
+            $event.stopPropagation();
+        };
+        //console.log($scope.monthOnly);
+    }],
+    scope:{
+        show:"=",
+        onSelectDay:"&",
+        onSelectMonth:"&",
+        monthOnly:"=",
+        valueChange:'&',
+        datevalue:"="
+    }
+    }
+});
